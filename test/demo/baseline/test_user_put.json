@@ -1,0 +1,8 @@
+[
+    {
+        "api": "/api/users",
+        "put_data": {
+            "remark": "Change remark"
+        }
+    }
+]

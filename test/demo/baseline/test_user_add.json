@@ -1,0 +1,10 @@
+[
+    {
+        "api": "/api/users",
+        "add_data": {
+            "name": "test_user",
+            "password": "123456",
+            "remark": "Test by python unittest"
+        }
+    }
+]

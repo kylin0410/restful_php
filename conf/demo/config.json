@@ -1,0 +1,20 @@
+{
+    "apidoc": true,
+    "auth": {
+        "enable": true,
+        "issue": "your company name",
+        "key": "your key example",
+        "expire": 7200
+    },
+    "mysql": {
+        "host": "localhost",
+        "dbname": "DEMO_DB",
+        "username": "demo",
+        "password": "demopassword"
+    },
+    "logging": {
+        "level": 0,
+        "folder": "\/var\/log\/apache2\/"
+    }
+}
+
