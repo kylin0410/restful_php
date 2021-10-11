@@ -3,9 +3,11 @@ Hi, this is a tiny restful-api framework written by PHP. Main features:
 - API path route match by regular expression
 - Provide swagger GUI to browse & test web API (need to write yaml in doc-string of API properly)
 - JWT token based authentication
-- Fast CRUD API implementation by simply inherit BaseCRUDController and MySQLBaseDAO.
-- Support page query, keyword search and order. Just need to implement pageQuery logic in DAO almostly.
+- Fast CRUD API implementation by simply inherit BaseCRUDController and MySQLBaseDAO
+- Support page query, keyword search and order. Just need to implement pageQuery logic in DAO almostly
 - Respond HTTP status code by exception handling
+- Pure PHP with any extra packages.
+- Very lightweight.
 
 # Directory structure
 - Directory structure is as below:
@@ -84,7 +86,7 @@ To setup the develop environment, prepare Ubuntu 18 OS and follow the steps belo
 ```
      create 666 www-data www-data
 ```
-7. Setup MySQL
+6. Setup MySQL
 #### Create DB user.
 - sudo mysql
 ```
@@ -93,13 +95,13 @@ To setup the develop environment, prepare Ubuntu 18 OS and follow the steps belo
 #### Initialize data.
 - sudo /workspace/test/demo/demo_init.sh
 
-6. Restart Apache
+7. Restart Apache
 - sudo systemctl restart apache2
 
-7. Run test cases
+8. Run test cases
 - sudo /workspace/test/demo/demo_test.sh
 
-8. Use swagger GUI to test API
+9. Use swagger GUI to test API
 - Browse this URL:
 ```
 http://{your IP}/demo/apidoc
