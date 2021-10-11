@@ -47,7 +47,7 @@ To setup the develop environment, prepare Ubuntu 18 OS and follow the steps belo
 - sudo apt-get install -y python3-pip
 - sudo pip3 install ddt
 
-2. Clone git repo, put in /workspace:
+2. Clone git repo, put in <strong>/workspace</strong></font>:
 - sudo mkdir workspace
 - sudo chown www-data.www-data workspace
 - sudo git clone {this git repo}
