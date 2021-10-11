@@ -1,5 +1,6 @@
 <?php
 require_once "dao/master_dao.php";
+require_once "dao/detail_dao.php";
 
 /**
  * @Controller
@@ -23,15 +24,17 @@ require_once "dao/master_dao.php";
  */
 class MasterController extends BaseCRUDController
 {
-    private $dictDao;
+    private $detailDao;
     public function __construct()
     {
         $this->dbConn = new MySQLConn($this);
         $this->dao = new MasterDAO($this->dbConn);
+        $this->detailDao = new DetailDAO($this->dbConn);
     }
 
     public function __destruct()
     {
+        $this->detailDao = null;
         $this->dao = null;
         $this->dbConn = null;
     }
@@ -254,5 +257,103 @@ class MasterController extends BaseCRUDController
     public function get($id)
     {
         parent::read($id);
+    }
+
+    /**
+     * @Route("/api/masters/([0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/details")
+     * @Method("POST")
+     * @Auth
+     * @SwaggerPath
+  /masters/{id}/details:
+    post:
+      tags:
+      - "Master"
+      summary: "Create detail under master."
+      operationId: "createDetail"
+      security:
+      - Bearer: []
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: "#/parameters/Id"
+      - in: "body"
+        name: "body"
+        required: true
+        schema:
+          type: "object"
+          properties:
+            item:
+              type: "string"
+              required: true
+              example: "ItemAAA"
+      responses:
+        "200":
+          description: "Successful operation."
+          schema:
+            allOf:
+              - type: "object"
+                properties:
+                  data:
+                    $ref: "#/definitions/Detail"
+              - $ref: "#/definitions/NormalResponseModel"
+        "500":
+          $ref: "#/responses/ServerError"
+     * @SwaggerPath
+     */
+    public function postDetail($id)
+    {
+        // Validation.
+        $master = $this->dao->selectById($id);
+        $jsonDict = $this->getJsonDictFromBody();
+        $validAry = $this->checkRequiredKeys($jsonDict, array("item"));
+        if (!empty($validAry)) {
+            throw new ValidationError($validAry);
+        }
+        $jsonDict["masterId"] = $id;
+        $id = $this->detailDao->create($jsonDict);
+        $entity = $this->detailDao->selectById($id);
+        $this->respondJson($this->makeSingleRespModel($entity));
+    }
+
+    /**
+     * @Route("/api/masters/([0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12})/details(\?.+)?")
+     * @Method("GET")
+     * @Auth
+     * @SwaggerPath
+    get:
+      tags:
+      - "Master"
+      summary: "Get detail of master by masterId (page query)."
+      operationId: "getDetails"
+      security:
+      - Bearer: []
+      produces:
+      - "application/json"
+      parameters:
+      - $ref: "#/parameters/Id"
+      - in: "query"
+        name: "item"
+        type: "string"
+        description: "Partial match to item."
+      responses:
+        "200":
+          description: "Successful operation."
+          schema:
+            allOf:
+              - type: "object"
+                properties:
+                  data:
+                    $ref: "#/definitions/Detail"
+              - $ref: "#/definitions/PageResponseModel"
+        "500":
+          $ref: "#/responses/ServerError"
+     * @SwaggerPath
+     */
+    public function getDetails($id, $paramStr="")
+    {
+        // Validation.
+        $pageParams = $this->parsePageParams($paramStr);
+        list($pageData, $pageNo, $pageSize, $totalCounts) = $this->detailDao->pageQuery($pageParams, $id);
+        $this->respondJson($this->makePageRespModel($pageData, $pageNo, $pageSize, $totalCounts));
     }
 }
