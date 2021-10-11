@@ -59,8 +59,9 @@ abstract class BaseCRUDController extends BaseController
      */
     public function update($id, $entityDict)
     {
+        $entity = $this->dao->selectById($id);  // Raise Entity not found if it absent.
         $this->dao->updateById($id, $entityDict);
-        $entity = $this->dao->selectById($id);
+        $entity = $this->dao->selectById($id);  // Respond entity after modified.
         $this->respondJson($this->makeSingleRespModel($entity));
     }
 
@@ -69,6 +70,7 @@ abstract class BaseCRUDController extends BaseController
      */
     protected function delete($id)
     {
+        $this->dao->selectById($id);  // Raise Entity not found if it absent.
         $this->dao->deleteById($id);
         $this->respondJson();
     }

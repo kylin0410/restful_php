@@ -308,9 +308,6 @@ class UserController extends BaseCRUDController
         if (!empty($validAry)) {
             throw new ValidationError($validAry);
         }
-
-        // Raise Entity not found.
-        $user = $this->dao->selectById($id);
         parent::update($id, $jsonDict);
     }
 

@@ -1,0 +1,5 @@
+RewriteEngine on
+
+RewriteCond %{HTTP:Authorization} ^(.*)$ [NC]
+RewriteRule /.* - [E=HTTP_AUTHORIZATION:%1]
+RewriteRule	^api/(.+)$	api/index.php	[NC,L]

@@ -36,7 +36,8 @@ CREATE TABLE Master (
   updateTime datetime,
   masterNo varchar(20),
   name varchar(20),
-  state varchar(20),
+  description varchar(255),
+  UNIQUE KEY (masterNo),
   PRIMARY KEY(id)
 );
 
